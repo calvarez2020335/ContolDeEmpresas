@@ -9,8 +9,8 @@ const UsuarioRutas = require('./src/routes/usuario.routes')
 
 //MIDDLEWARES
 
-//app.use(express.urlencoded({ extended: false }));
-//app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 //Cabeceras
 
