@@ -39,23 +39,49 @@ function RegistrarEmpresa(req, res) {
   var usuarioModel = new Usuario();
 
   if (parametro.nombre && parametro.email && parametro.password) {
-
     usuarioModel.nombre = parametro.nombre;
     usuarioModel.email = parametro.email;
     usuarioModel.password = parametro.password;
-    usuarioModel.rol = 'ROL_EMPRESA'
+    usuarioModel.rol = "ROL_EMPRESA";
 
-    Usuario.find({ email: parametros.email }, (err, usuarioEncontrado) =>{
-      if(usuarioEncontrado.length == 0){
-        bcrypt.hash(parametros.password, null, null, (err, passwordEncriptada) =>{
+    Usuario.find({ email: parametro.email }, (err, usuarioEncontrado) => {
 
+        if(usuarioEncontrado.length == 0) {
+
+          bcrypt.hash(parametro.password, null, null, (err, passwordEncriptada)=>{
+            usuarioModel.password = passwordEncriptada;
+
+            usuarioModel.save((err, usuarioGuardado)=>{
+
+              if(err) return res.status(500).send({ mensaje: "Error en la peticion" });
+              if(!usuarioGuardado) return res.status(500).send({ mensaje: "Error al agregar Empresa" });
+
+              return res.status(200).send({ usuario: usuarioGuardado})
+            })
+          })
+
+        } else {
+          return res.status(500).send({ mensaje: "La empresa ya a sido creada"})
         }
-      }else{
-        
-      }
-    })
 
+    });
   }
+}
+
+function EditarEmpresa(req, res){
+  var idUser = req.params.idUsuario;
+  var parametros = req.body;
+
+  if(idUser !== req.user.sub) return res.status(500).send({ mensaje: "No puede editar otro usuario"})
+  
+  Usuario.findByIdAndUpdate(req.user.sub, parametros,{new : true}, (err, usuarioActualizado)=>{
+
+    if(err) return res.status(500).send({ mensaje: "Error en la peticion" })
+    if(!usuarioActualizado) return res.status(500).send({ mensaje: "Error al editar usuario"})
+
+    return res.status(200).send({ usuario: usuarioActualizado})
+
+  })
 }
 
 function Login(req, res) {
@@ -98,4 +124,6 @@ function Login(req, res) {
 module.exports = {
   registrarAdmin,
   Login,
+  RegistrarEmpresa,
+  EditarEmpresa
 };
