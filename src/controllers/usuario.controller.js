@@ -101,10 +101,6 @@ function EliminarEmpresas(req, res) {
 
 }
 
-function AsignarEmpleadoEmpresa(req, res) {
-  
-}
-
 function Login(req, res) {
   var parametros = req.body;
   Usuario.findOne({ email: parametros.email }, (err, usuarioEncontrado) => {

@@ -5,6 +5,7 @@ var app = express();
 
 // importacion de rutas
 const UsuarioRutas = require('./src/routes/usuario.routes')
+const EmpleadosRutas = require('./src/routes/empleados.routes')
 
 
 //MIDDLEWARES
@@ -19,7 +20,7 @@ app.use(cors());
 
 //Carga de rutas
 
-app.use('/api', UsuarioRutas);
+app.use('/api', UsuarioRutas, EmpleadosRutas);
 
 
 //Exportaciones
