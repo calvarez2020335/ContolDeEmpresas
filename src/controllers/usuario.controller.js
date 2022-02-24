@@ -69,19 +69,36 @@ function RegistrarEmpresa(req, res) {
 }
 
 function EditarEmpresa(req, res){
-  var idUser = req.params.idUsuario;
-  var parametros = req.body;
+  var idUser = req.params.idUser;
+  var parametros= req.body;
 
-  if(idUser !== req.user.sub) return res.status(500).send({ mensaje: "No puede editar otro usuario"})
-  
-  Usuario.findByIdAndUpdate(req.user.sub, parametros,{new : true}, (err, usuarioActualizado)=>{
+  if(req.user.rol !== 'ROL_ADMIN'){
+    return res.status(500).send({mensaje: "No tiene acceso a este recurso"})
+  }
 
-    if(err) return res.status(500).send({ mensaje: "Error en la peticion" })
-    if(!usuarioActualizado) return res.status(500).send({ mensaje: "Error al editar usuario"})
+  Usuario.findByIdAndUpdate(idUser, parametros, {new : true}, (err, usuarioEditado) => {
+    if(err) return res.status(500).send({mensaje: "Error en la peticion"})
+    if(!usuarioEditado)return res.status(403).send({ mensaje: "Error al editar la empresa"})
 
-    return res.status(200).send({ usuario: usuarioActualizado})
-
+    return res.status(200).send({ usuario : usuarioEditado})
   })
+}
+
+function EliminarEmpresas(req, res) {
+  var idUser = req.params.idUser
+
+  if(req.user.rol !== 'ROL_ADMIN'){
+    return res.status(500).send({ mensaje: "No tiene acceso a este recurso" });
+  }
+
+  Usuario.findByIdAndDelete(idUser, (err, usuarioEliminado) => {
+    if(err) return res.status(500).send({mensaje: "Error en la peticion"})
+    if (!usuarioEliminado)
+      return res.status(403).send({ mensaje: "Error al eliminar la empresa" });
+
+    return res.status(200).send({usuario: usuarioEliminado})
+  })
+
 }
 
 function Login(req, res) {
@@ -125,5 +142,6 @@ module.exports = {
   registrarAdmin,
   Login,
   RegistrarEmpresa,
-  EditarEmpresa
+  EditarEmpresa,
+  EliminarEmpresas
 };
