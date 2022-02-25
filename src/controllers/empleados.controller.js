@@ -4,9 +4,17 @@ function agregarEmpleado(req, res) {
   const parametros = req.body;
   const modeloEmpleados = new Empleados();
 
-  if (parametros.nombre && parametros.apellido && parametros.idEmpresa) {
+  if (
+    parametros.nombre &&
+    parametros.apellido &&
+    parametros.puesto &&
+    parametros.departamento &&
+    parametros.idEmpresa
+  ) {
     modeloEmpleados.nombre = parametros.nombre;
     modeloEmpleados.apellido = parametros.apellido;
+    modeloEmpleados.puesto = parametros.puesto;
+    modeloEmpleados.departamento = parametros.departamento;
     modeloEmpleados.idEmpresa = req.user.sub;
 
     modeloEmpleados.save((err, empleadoGuardado) => {
@@ -23,6 +31,10 @@ function agregarEmpleado(req, res) {
       .status(400)
       .send({ mensaje: "Debe enviar los parametros solicitados" });
   }
+}
+
+function editarEmpleado(req, res) {
+  
 }
 
 module.exports = {
