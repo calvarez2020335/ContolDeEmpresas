@@ -34,9 +34,39 @@ function agregarEmpleado(req, res) {
 }
 
 function editarEmpleado(req, res) {
-  
+
+  const empleadoId = req.params.idEmpleado;
+  const parametros = req.body;
+
+  Empleados.findOne( {_id : empleadoId, idEmpresa: req.user.sub}, (err, empladoEmpresa) => {
+
+    if(!empladoEmpresa){
+      return res
+        .status(400)
+        .send({ mensaje: "No puede editar emplados de otras empresas" });
+    }
+
+      Empleados.findByIdAndUpdate(
+        empleadoId,
+        parametros,
+        { new: true },
+        (err, empleadoEditado) => {
+          if (err)
+            return res.status(500).send({ mensaje: "Error en la peticion" });
+          if (!empleadoEditado)
+            return res
+              .status(403)
+              .send({ mensaje: "Error al editar el empleado" });
+
+          return res.status(200).send({ empleado: empleadoEditado });
+        }
+      );
+    
+  })
+
 }
 
 module.exports = {
-    agregarEmpleado
+    agregarEmpleado,
+    editarEmpleado
 }
