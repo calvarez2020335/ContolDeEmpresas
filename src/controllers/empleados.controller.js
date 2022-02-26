@@ -66,7 +66,30 @@ function editarEmpleado(req, res) {
 
 }
 
+function eliminarEmpleados(req, res) {
+
+  const empleadoId = req.params.idEmpleado;
+
+  Empleados.findOne( {_id : empleadoId, idEmpresa: req.user.sub}, (err, empladoEmpresa) => {
+
+    if(!empladoEmpresa){
+      return res
+        .status(400)
+        .send({ mensaje: "No puede eliminar emplados de otras empresas" });
+    }
+
+    Empleados.findByIdAndDelete(empleadoId, (err, empleadoEliminado) => {
+      if(err) return res.status(500).send({ mensaje: "Error en la peticion" })
+      if(!empleadoEliminado) return res.status(403).send({ mensaje: "Error al eliminar el empleado"})
+
+      return res.status(200).send({ empleado: empleadoEliminado})
+    })
+
+  })
+}
+
 module.exports = {
     agregarEmpleado,
-    editarEmpleado
+    editarEmpleado,
+    eliminarEmpleados
 }
