@@ -43,7 +43,7 @@ function editarEmpleado(req, res) {
     if(!empladoEmpresa){
       return res
         .status(400)
-        .send({ mensaje: "No puede editar emplados de otras empresas" });
+        .send({ mensaje: "No puede editar empleados de otras empresas" });
     }
 
       Empleados.findByIdAndUpdate(
@@ -75,7 +75,7 @@ function eliminarEmpleados(req, res) {
     if(!empladoEmpresa){
       return res
         .status(400)
-        .send({ mensaje: "No puede eliminar emplados de otras empresas" });
+        .send({ mensaje: "No puede eliminar empleados de otras empresas" });
     }
 
     Empleados.findByIdAndDelete(empleadoId, (err, empleadoEliminado) => {
@@ -88,8 +88,24 @@ function eliminarEmpleados(req, res) {
   })
 }
 
+function contarEmpleados(req, res) {
+
+  Empleados.find( { idEmpresa: req.user.sub}, (err, empladoEmpresa) => {
+      for (let i = 0; i < empladoEmpresa.length; i++) {
+          empladoEmpresa[i].nombre;
+      }
+      return res.status(200).send({Empleados: empladoEmpresa.length})
+  })
+
+}
+
+function buscarEmpleadoPorId(req, res){
+  
+}
+
 module.exports = {
     agregarEmpleado,
     editarEmpleado,
-    eliminarEmpleados
+    eliminarEmpleados,
+    contarEmpleados
 }
