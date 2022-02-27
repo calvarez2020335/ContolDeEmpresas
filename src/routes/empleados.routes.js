@@ -13,6 +13,7 @@ api.delete('/eliminarEmpleado/:idEmpleado', [md_autenticacion.Auth, md_roles.ver
 api.get('/contarEmpleados', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.contarEmpleados);
 api.get('/buscarEmpleadoId/:idEmpleado', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.buscarEmpleadoPorId);
 api.get('/buscarEmpleadoNombre/:nombreEmpleado', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.buscarEmpleadoPorNombre)
-
+api.get('/buscarEmpleadoPuesto/:puesto', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.buscarEmpleadoPorPuesto)
+api.get('/buscarEmpleadoDepartamento/:departamento', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.buscarEmpleadoPorDepartamento)
 
 module.exports = api;

@@ -122,12 +122,12 @@ function buscarEmpleadoPorId(req, res){
 function buscarEmpleadoPorNombre(req, res){
   var nombreEmpleado = req.params.nombreEmpleado;
 
-  Empleados.findOne( {nombre : nombreEmpleado, idEmpresa: req.user.sub}, (err, empleadoEncontrado)=>{
+  Empleados.find( {nombre : nombreEmpleado, idEmpresa: req.user.sub}, (err, empleadoEncontrado)=>{
 
     if(!empleadoEncontrado){
       return res
         .status(400)
-        .send({ mensaje: "No puede buscar empleados de otras empresas" });
+        .send({ mensaje: empleadoEncontrado.length });
     }
 
     if(err) return res.status(500).send({ mensaje: "Error en la peticion" })
@@ -139,7 +139,47 @@ function buscarEmpleadoPorNombre(req, res){
 
 }
 
+function buscarEmpleadoPorPuesto(req, res){
+  var puestoEmpleado = req.params.puesto;
 
+  Empleados.find(
+    { puesto : puestoEmpleado, idEmpresa: req.user.sub },
+    (err, empleadoEncontrado) => {
+      if (!empleadoEncontrado) {
+        return res
+          .status(400)
+          .send({ mensaje: "No puede buscar empleados de otras empresas" });
+      }
+
+      if (err) return res.status(500).send({ mensaje: "Error en la peticion" });
+
+      return res.status(200).send({ empleado: empleadoEncontrado });
+    }
+  );
+}
+
+function buscarEmpleadoPorDepartamento(req, res){
+  var departamentoEmpleado = req.params.departamento;
+
+  Empleados.find(
+    { departamento : departamentoEmpleado, idEmpresa: req.user.sub },
+    (err, empleadoEncontrado) => {
+      if (!empleadoEncontrado) {
+        return res
+          .status(400)
+          .send({ mensaje: "No puede buscar empleados de otras empresas" });
+      }
+
+      if (err) return res.status(500).send({ mensaje: "Error en la peticion" });
+
+      return res.status(200).send({ empleado: empleadoEncontrado });
+    }
+  );
+}
+
+function buscarTodosLosEmpleados(req, res){
+  
+}
 
 module.exports = {
     agregarEmpleado,
@@ -147,5 +187,7 @@ module.exports = {
     eliminarEmpleados,
     contarEmpleados,
     buscarEmpleadoPorId,
-    buscarEmpleadoPorNombre
+    buscarEmpleadoPorNombre,
+    buscarEmpleadoPorPuesto,
+    buscarEmpleadoPorDepartamento
 }
