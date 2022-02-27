@@ -15,5 +15,6 @@ api.get('/buscarEmpleadoId/:idEmpleado', [md_autenticacion.Auth, md_roles.verEmp
 api.get('/buscarEmpleadoNombre/:nombreEmpleado', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.buscarEmpleadoPorNombre)
 api.get('/buscarEmpleadoPuesto/:puesto', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.buscarEmpleadoPorPuesto)
 api.get('/buscarEmpleadoDepartamento/:departamento', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.buscarEmpleadoPorDepartamento)
+api.get('/Empleados', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.buscarTodosLosEmpleados)
 
 module.exports = api;
