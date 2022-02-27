@@ -11,6 +11,7 @@ api.post('/registrarEmpleado', [md_autenticacion.Auth, md_roles.verEmpresas], co
 api.put('/editarEmpleado/:idEmpleado', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.editarEmpleado);
 api.delete('/eliminarEmpleado/:idEmpleado', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.eliminarEmpleados)
 api.get('/contarEmpleados', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.contarEmpleados);
+api.get('/buscarEmpleadoId/:idEmpleado', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.buscarEmpleadoPorId);
 
 
 module.exports = api;

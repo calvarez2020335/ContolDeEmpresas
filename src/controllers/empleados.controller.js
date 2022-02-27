@@ -101,11 +101,28 @@ function contarEmpleados(req, res) {
 
 function buscarEmpleadoPorId(req, res){
   
+  var empleadoId = req.params.idEmpleado;
+
+  Empleados.findOne({_id : empleadoId, idEmpresa: req.user.sub}, (err, empleadoEncontrado)=>{
+
+    if(!empleadoEncontrado){
+      return res
+        .status(400)
+        .send({ mensaje: "No puede buscar empleados de otras empresas" });
+    }
+
+    if(err) return res.status(500).send({ mensaje: "Error en la peticion" })
+
+    return res.status(200).send({ empleado: empleadoEncontrado})
+
+  })
+
 }
 
 module.exports = {
     agregarEmpleado,
     editarEmpleado,
     eliminarEmpleados,
-    contarEmpleados
+    contarEmpleados,
+    buscarEmpleadoPorId
 }
