@@ -125,7 +125,7 @@ function buscarEmpleadoPorId(req, res){
 function buscarEmpleadoPorNombre(req, res){
   var nombreEmpleado = req.params.nombreEmpleado;
 
-  Empleados.find( {nombre : nombreEmpleado, idEmpresa: req.user.sub}, (err, empleadoEncontrado)=>{
+  Empleados.find( {nombre :{$regex : nombreEmpleado, $options :'i'} , idEmpresa: req.user.sub}, (err, empleadoEncontrado)=>{
 
     if(!empleadoEncontrado){
       return res
@@ -146,7 +146,7 @@ function buscarEmpleadoPorPuesto(req, res){
   var puestoEmpleado = req.params.puesto;
 
   Empleados.find(
-    { puesto : puestoEmpleado, idEmpresa: req.user.sub },
+    { puesto : {$regex : puestoEmpleado, $options :'i'}, idEmpresa: req.user.sub },
     (err, empleadoEncontrado) => {
       if (!empleadoEncontrado) {
         return res
@@ -165,7 +165,7 @@ function buscarEmpleadoPorDepartamento(req, res){
   var departamentoEmpleado = req.params.departamento;
 
   Empleados.find(
-    { departamento : departamentoEmpleado, idEmpresa: req.user.sub },
+    { departamento : {$regex :departamentoEmpleado, $options :'i'}, idEmpresa: req.user.sub },
     (err, empleadoEncontrado) => {
       if (!empleadoEncontrado) {
         return res
@@ -192,6 +192,7 @@ function pdf(req, res){
   Empleados.find({idEmpresa: req.user.sub}, (err, empleadoEncontrado)=>{
     for(let i = 0; i < empleadoEncontrado.length; i++) {
       doc.pipe(fs.createWriteStream("reportes/"+ req.user.nombre + ".pdf"));
+      
       doc.text(empleadoEncontrado[i]._id)
       doc.text(empleadoEncontrado[i].nombre + " " + empleadoEncontrado[i].apellido);
       doc.text(empleadoEncontrado[i].puesto)
