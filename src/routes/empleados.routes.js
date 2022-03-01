@@ -17,6 +17,6 @@ api.get('/buscarEmpleadoPuesto/:puesto', [md_autenticacion.Auth, md_roles.verEmp
 api.get('/buscarEmpleadoDepartamento/:departamento', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.buscarEmpleadoPorDepartamento)
 api.get('/Empleados', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.buscarTodosLosEmpleados)
 api.get('/pdf', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.pdf)
-api.get('/excel', [md_autenticacion.Auth, md_roles.verEmpresas], controladorEmpleados.excel)
+
 
 module.exports = api;

@@ -2,7 +2,6 @@ const Empleados = require("../models/empleados.model");
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const doc = new PDFDocument();
-const XLSX = require('xlsx');
 
 function agregarEmpleado(req, res) {
   const parametros = req.body;
@@ -195,23 +194,13 @@ function pdf(req, res){
       doc.pipe(fs.createWriteStream("reportes/"+ req.user.nombre + ".pdf"));
       doc.text(empleadoEncontrado[i]._id)
       doc.text(empleadoEncontrado[i].nombre + " " + empleadoEncontrado[i].apellido);
+      doc.text(empleadoEncontrado[i].puesto)
     }
     doc.end();
   })
   return res.status(200).send("Pdf generado en la carpeta reportes");
 }
 
-const excel = ()=> {
-    const workSheet=XLSX.utils.json_to_sheet(Empleados)
-    const workBook=XLSX.utils.book_new();
-
-    XLSX.utils.book_append_sheet(workBook, workSheet, "Empleados");
-    XLSX.write(workBook, {bookType: "xlsx", type: "buffer"})
-
-    XLSX.write(workBook, {bookType: "xlsx", type: "binary"})
-
-    XLSX.writeFile(workBook, "empleados.xlsx")
-}
 
 module.exports = {
     agregarEmpleado,
@@ -223,6 +212,5 @@ module.exports = {
     buscarEmpleadoPorPuesto,
     buscarEmpleadoPorDepartamento,
     buscarTodosLosEmpleados,
-    pdf,
-    excel
+    pdf
 }
