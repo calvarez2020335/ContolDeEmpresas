@@ -33,6 +33,8 @@ function RegistrarEmpresa(req, res) {
   var parametro = req.body;
   var usuarioModel = new Usuario();
 
+  
+
   if (parametro.nombre && parametro.email && parametro.password) {
     usuarioModel.nombre = parametro.nombre;
     usuarioModel.email = parametro.email;
